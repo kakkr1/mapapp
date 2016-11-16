@@ -62,10 +62,10 @@
 	</div>
 	</div>
 	 
-	 <div id="map"></div>
+	 <div id="map"></div></br></br>
 	 <script> 
 
-      function initMap() {
+      function initMap() {	  
 	  var description='Select category';
 	  var category=document.getElementById("job_category").value;
 	  var location=document.getElementById("location").value;
@@ -74,6 +74,7 @@
 	 var image = 'AA';
 	 var myLatLng = {lat: 0, lng: 0};
 	 var contentString = 'AA';
+	 
 		
 	
 	if (category=="DevOps")
@@ -139,7 +140,7 @@
 	
 	contentString=contentString + '/ ' + '$30' + '/' + info;
 	}
-	else if(money=="20"){
+	else if(money=="40"){
 	
 	contentString=contentString + '/ ' + '$40' + '/' + info;
 	}
@@ -150,6 +151,10 @@
 	}
 	
 	
+	 
+	      
+                
+       
 	
 	
 	 //document.getElementById("demo").innerHTML = image;
@@ -242,10 +247,22 @@
         });
 		map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
 
-		
-		
-		
+	
+		var job = category;
+					var jobLocation = myLatLng;  
+                    var jobMoney = money;
+					var jobInfo=info; 					
+					
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    }
 
+                    xmlhttp.open("GET", "ajax.php?job=" + job + "&jobLocation=" + jobLocation + "&jobMoney=" +  jobMoney + "&jobInfo=" +  jobInfo, true);
+                    xmlhttp.send();
+					<?php
+		$.post('ajax.php', {variable: job});
+?>
+	//window.location.href = "ajax.php?name=" + job; 
         var infowindow = new google.maps.InfoWindow({
           content: contentString
         });
@@ -274,9 +291,13 @@
           marker.setAnimation(google.maps.Animation.BOUNCE);
         }
       }
+	      
 	  }
 	 
 	  
+
+                    
+
     </script>	
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyMpixev2LyxXcxJGYlMaqkeYj_TFc8Vg
