@@ -7,8 +7,15 @@ include_once 'dbconnect.php';
 <html>
 <head>
 <title>Google Map</title>
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <title>Fat Cat</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" >
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
 
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	
  <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -17,13 +24,10 @@ include_once 'dbconnect.php';
 		 
       }
       /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+      
     </style>
 <style type="text/css">
+ 
 h1.heading{padding:0px;margin: 0px 0px 10px 0px;text-align:center;font: 18px Georgia, "Times New Roman", Times, serif;}
 
 /* width and height of google map */
@@ -43,7 +47,86 @@ div.marker-info-win p{padding: 0px;margin: 10px 0px 10px 0;}
 div.marker-inner-win{padding: 5px;}
 button.save-marker, button.remove-marker{border: none;background: rgba(0, 0, 0, 0);color: #00F;padding: 0px;text-decoration: underline;margin-right: 10px;cursor: pointer;
 }
-.img-center {margin:0 auto;}</style>
+.img-center {  opacity: 0.2;
+    filter: alpha(opacity=50); /* For IE8 and earlier */}
+
+ 
+label.btn span {
+  font-size: 1.5em ;
+}
+
+label input[type="radio"] ~ i.fa.fa-circle-o{
+    color: #c8c8c8;    display: inline;
+}
+label input[type="radio"] ~ i.fa.fa-dot-circle-o{
+    display: none;
+}
+label input[type="radio"]:checked ~ i.fa.fa-circle-o{
+    display: none;
+}
+label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
+    color: #7AA3CC;    display: inline;
+}
+label:hover input[type="radio"] ~ i.fa {
+color: #7AA3CC;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-square-o{
+    color: #c8c8c8;    display: inline;
+}
+label input[type="checkbox"] ~ i.fa.fa-check-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
+    color: #7AA3CC;    display: inline;
+}
+label:hover input[type="checkbox"] ~ i.fa {
+color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label.active{
+    color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label {
+display: inline-block;
+padding: 6px 12px;
+margin-bottom: 0;
+font-size: 14px;
+font-weight: normal;
+line-height: 2em;
+text-align: left;
+white-space: nowrap;
+vertical-align: top;
+cursor: pointer;
+background-color: none;
+border: 0px solid 
+#c8c8c8;
+border-radius: 3px;
+color: #c8c8c8;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+}
+
+div[data-toggle="buttons"] label:hover {
+color: #7AA3CC;
+}
+
+div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
+-webkit-box-shadow: none;
+box-shadow: none;
+}
+
+
+
+
+</style>
 </head>
 <body>       
 <nav class="navbar navbar-default" role="navigation">
@@ -59,7 +142,7 @@ button.save-marker, button.remove-marker{border: none;background: rgba(0, 0, 0, 
 		</div>
 		<div class="collapse navbar-collapse" id="navbar1">
 			<ul class="nav navbar-nav navbar-right">
-				<?php if (isset($_SESSION['usr_id'])) {echo $_SESSION['usr_id']; ?>
+				<?php if (isset($_SESSION['usr_id'])) {//echo $_SESSION['usr_id']; ?>
 				<li><p class="navbar-text">Signed in as <?php echo $_SESSION['usr_name']; ?></p></li>
 				<li><a href="logout.php">Log Out</a></li><br>
 				
@@ -75,7 +158,7 @@ button.save-marker, button.remove-marker{border: none;background: rgba(0, 0, 0, 
 <div class="row">
 	  <div class="col-md-2 col-md-offset-5">
 	<form>
-        </br></br>
+         
 		 <h4 class="text-center"> Choose Location:</h4> 
 		 <select class="form-control" id="location" onchange="map_initialize()">
                         <option value="null">Please Choose Location</option>
@@ -85,8 +168,30 @@ button.save-marker, button.remove-marker{border: none;background: rgba(0, 0, 0, 
                         <option value="D">Dunedin</option>
                         
                         </select></br>
-	  <button type="button" id="mapsingle"class="btn btn-danger center-block" onclick="map_initialize()"><i>Run</i></button>  </br>
+	 <!--  <button type="button" id="mapsingle"class="btn btn-danger center-block" onclick="map_initialize()"><i>Run</i></button>  </br>
 	    <button type="button" id="mapall" class="btn btn-danger center-block"  ><i>Run All</i></button>  </br>
+		-->
+		 
+	 
+  
+   <div class="row">
+    <div class="col-xs-12">
+      <hr> Job options:
+      <br>
+      <div class="btn-group" data-toggle="buttons">
+        <label  id="mapsingle" class="btn active">
+         <input type="radio" name="map" checked><i  class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span>Mine</span>
+        </label>
+        <label  id="mapall"class="btn">
+         <input type="radio" name="map" id="mapall" ><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> All</span>
+        </label>
+      </div>
+
+
+    </div>
+  </div>
+  
+
           </form>
 		  
 		  
@@ -108,13 +213,19 @@ button.save-marker, button.remove-marker{border: none;background: rgba(0, 0, 0, 
 
 <div id="google_map"></div></br></br>
 <?php } else { ?>
+ <div class="row">
+ <div class="col-md-12 col-xs-12" >
+<img src="icons/purr01.png" class="img-responsive img-rounded img-center pull-right" alt="Fat Cat">
+ </div>  
+ </div>  
  
-<img src="icons/cat.jpg" class="img-responsive img-circle img-center" alt="Cinque Terre">
  
-
+ 
+ 
 <?php } ?>
 
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyMpixev2LyxXcxJGYlMaqkeYj_TFc8Vg
 &callback=initMap"></script>
 <script type="text/javascript">
@@ -289,7 +400,7 @@ var mapCenter = new google.maps.LatLng(47.6145, -122.3418); //Google map Coordin
 			 
 				//map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
 			//Right Click to Drop a New Marker
-			google.maps.event.addListener(map, 'click', function(event) {
+			google.maps.event.addListener(map, 'dblclick', function(event) {
 				//Edit form to be displayed with new marker
 				var EditForm = '<p><div class="marker-edit">'+
 				'<form action="ajax-save.php" method="POST" name="SaveMarker" id="SaveMarker">'+
